@@ -29,6 +29,19 @@ async function main() {
       transparencyDataPageHtml,
       "text/html",
     );
+    const csvDownloadUrlElements = transparencyDataPageDocument
+      ?.querySelectorAll(
+        'a[href$=".csv"]',
+      ) as Element[] | undefined;
+
+    console.log(
+      transparencyDataPageDocument?.querySelector(".gem-c-title__text")
+        ?.textContent,
+    );
+
+    for (const csvDownloadUrlElement of csvDownloadUrlElements || []) {
+      const csvDownloadUrl = csvDownloadUrlElement.getAttribute("href");
+    }
   }
 }
 
