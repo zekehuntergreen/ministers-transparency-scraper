@@ -1,4 +1,7 @@
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import {
+  DOMParser,
+  Element,
+} from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 async function main() {
   const collectionPageResponse = await fetch(
@@ -10,7 +13,14 @@ async function main() {
     collectionPageHtml,
     "text/html",
   );
-  console.log(collectionPageDocument);
+  const transparencyDataLinkElements = collectionPageDocument?.querySelectorAll(
+    "a.gem-c-document-list__item-title",
+  ) as Element[] | undefined;
+
+  for (const linkElement of transparencyDataLinkElements || []) {
+    const url = linkElement.getAttribute("href");
+    console.log(url);
+  }
 }
 
 main();
