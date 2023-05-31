@@ -2,6 +2,7 @@ import {
   DOMParser,
   Element,
 } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { download } from "https://deno.land/x/download/mod.ts";
 
 async function main() {
   const collectionPageResponse = await fetch(
@@ -16,6 +17,8 @@ async function main() {
   const transparencyDataLinkElements = collectionPageDocument?.querySelectorAll(
     "a.gem-c-document-list__item-title",
   ) as Element[] | undefined;
+
+  await Deno.mkdir("./output");
 
   for (const linkElement of transparencyDataLinkElements || []) {
     const url = linkElement.getAttribute("href");
@@ -41,6 +44,12 @@ async function main() {
 
     for (const csvDownloadUrlElement of csvDownloadUrlElements || []) {
       const csvDownloadUrl = csvDownloadUrlElement.getAttribute("href");
+      if (csvDownloadUrl === null) {
+        continue;
+      }
+      await download(csvDownloadUrl, {
+        dir: "./output",
+      });
     }
   }
 }
