@@ -19,7 +19,16 @@ async function main() {
 
   for (const linkElement of transparencyDataLinkElements || []) {
     const url = linkElement.getAttribute("href");
-    console.log(url);
+
+    const transparencyDataPageResponse = await fetch(
+      `https://www.gov.uk${url}`,
+    );
+    const transparencyDataPageHtml = await transparencyDataPageResponse
+      .text();
+    const transparencyDataPageDocument = parser.parseFromString(
+      transparencyDataPageHtml,
+      "text/html",
+    );
   }
 }
 
